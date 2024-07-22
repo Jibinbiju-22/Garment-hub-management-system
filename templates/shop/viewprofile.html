@@ -1,0 +1,125 @@
+{% include 'shop/header.html' %}
+{% load static %}
+
+<style>
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 13px;
+  padding: 13px;
+  width: 111px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 13px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+
+<!--Body Content-->
+<div id="page-content">
+
+    {% for i in shop %}
+    <br><br><br><br><br><br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="text-center mb-4">
+                    <h2 class="h2">PROFILE</h2><br><br>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4"><img class="blur-up lazyload"
+                                                                     data-src="{{ i.shopphoto.url }}"
+                                                                     src="{{ i.shopphoto.url }}" alt="{{i.shopname}}"/>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>{{ i.shopname }}</h2>
+
+            </div>
+        </div>
+
+        <br> <br>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-4">
+                <h2 class="h2">ADDRESS</h2>
+                <div class="rte-setting"><p><strong>{{i.address}}</strong></p>
+                    <p>LOCATION : {{i.locationid.locationname}}</p>
+                    <p>DISTRICT : {{i.locationid.districtid.districtname}}</p>
+                </div>
+
+                <br>
+                <h2 class="h2">REGISTRATION DATE</h2>
+                <div class="rte-setting"><p><strong>{{i.registrationdate}}</strong></p>
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <h2 class="h2">Contact</h2><br>
+                <ul class="addressFooter">
+                    <li class="phone"><i class="icon anm anm-phone-s"></i>
+                        <p>{{i.phone}}</p></li>
+                    <li class="email"><i class="icon anm anm-envelope-l"></i>
+                        <p>{{i.loginid.email}}</p></li>
+                </ul>
+                <hr/>
+
+
+
+
+
+                         <form class="variants" action="">
+                                    <a href="{% url 'editprofile' id=i.loginid.loginid %}">
+                                    <button class="button" style="vertical-align:middle" type="button"><span>UPDATE</span></button>
+                                        </a>
+                                </form>
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+</div>
+<!--End Body Content-->
+
+{% include 'shop/footer.html' %}

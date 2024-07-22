@@ -1,0 +1,120 @@
+{% include 'shop/header.html' %}
+{% load static %}
+
+<style>
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 13px;
+  padding: 13px;
+  width: 111px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 13px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+
+<!--Body Content-->
+<div id="page-content">
+    <!--Collection Banner-->
+    <div class="collection-header">
+        <div class="collection-hero">
+            <div class="collection-hero__image"><img data-src="{% static 'shop/assets/images/cat-women3.jpg' %}"
+                                                     src="{% static 'shop/assets/images/cat-women3.jpg' %}" alt="Women"
+                                                     title="Women"/></div>
+            <div class="collection-hero__title-wrapper"><h1 class="collection-hero__title page-width">Shop List
+                View</h1></div>
+        </div>
+    </div>
+    <!--End Collection Banner-->
+
+    <div class="container">
+        <div class="row">
+
+            <!--Main Content-->
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="category-description">
+                    <br><br><strong><h1 align="center">Products of {{pattern.patternname}}</h1></strong>
+                </div>
+                <hr>
+                <div class="productList">
+
+                    <div class="list-view-items grid--view-items">
+
+                        {% for i in product %}
+
+                        <!--ListView Item-->
+                        <div class="list-product list-view-item">
+                            <div class="list-view-item__image-column">
+                                <div class="list-view-item__image-wrapper">
+                                    <!-- Image -->
+                                    <a href="{% url 'viewproductmore' id=i.productid %}"><img class="list-view-item__image blur-up lazyload"
+                                                    data-src="/images/{{ i.productphoto }}"
+                                                    src="/images/{{ i.productphoto }}"
+                                                    alt="image" ></a>
+                                    <!-- End Image -->
+                                </div>
+                            </div>
+                            <div class="list-view-item__title-column">
+                                <div class="h2 grid-view-item__title"><a href="{% url 'viewproductmore' id=i.productid %}">{{i.productname}}</a></div>
+                                <!-- Sort Description -->
+                                <p>{{i.description}}</p>
+                                <!-- End Sort Description -->
+                                <!-- Price -->
+                                <p class="product-price grid-view-item__meta">
+                                    <span class="product-price__price product-price__sale"><span class="money">Rs. {{i.price}}</span></span>
+                                </p>
+                                <!-- End Price -->
+                                <form class="variants" action="">
+                                    <a href="{% url 'viewproductmore' id=i.productid %}">
+                                    <button class="button" style="vertical-align:middle" type="button"><span>BOOK NOW</span></button>
+                                        </a>
+                                </form>
+                            </div>
+                        </div>
+                        <!--End ListView Item-->
+
+                        {% endfor %}
+
+                    </div>
+                        </div>
+                </div>
+
+            </div>
+            <!--End Main Content-->
+        </div>
+    </div>
+
+</div>
+<!--End Body Content-->
+
+{% include 'shop/footer.html' %}

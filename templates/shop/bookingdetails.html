@@ -1,0 +1,174 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+<!--    alert("check")-->
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+        $('#bookingquantity').change(function () {
+<!--		alert("test")-->
+            var bookingquantity = parseFloat($('#bookingquantity').val());
+<!--        alert(bookingquantity)-->
+            var price = parseFloat($('#price').val());
+<!--        alert(price)-->
+            var bookingamount = bookingquantity * price;
+<!--        alert(bookingamount);-->
+            $('#bookingamount').val(bookingamount);
+            var total=parseFloat($('#total').val());
+            total = total + bookingamount;
+            alert("Whole booking amount is " + total)
+        });
+    });
+</script>
+
+{% include 'shop/header.html' %}
+{% load static %}
+<style>
+    .button {
+        background-color: #f4511e; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+    }
+    .button1 {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+    .button2:hover {
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .continue {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 13px;
+        padding: 13px;
+        width: 111px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+    }
+    .continue2 {background-color: #008CBA;} /* Blue */
+    .continue3 {background-color: #f44336;} /* Red */
+    .continue4 {background-color: #e7e7e7; color: black;} /* Gray */
+    .continue5 {background-color: #555555;} /* Black */
+</style>
+<br><br><br><br><br><br><br><br>
+<!--Body Content-->
+<div id="page-content">
+    <!--MainContent-->
+    <div id="MainContent" class="main-content" role="main">
+        <div id="ProductSection-product-template" class="product-template__container prstyle2 container">
+            <div class="product-single product-single-1">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="product-details-img product-single__photos bottom">
+                            <div class="zoompro-wrap product-zoom-right pl-20">
+                                <div class="zoompro-span">
+                                    <img class="blur-up lazyload zoompro"
+                                         data-zoom-image="/images/{{ booking.productid.productphoto }}" alt=""
+                                         src="/images/{{ booking.productid.productphoto }}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="prFeatures"><br><br><br><br>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+                                    <img src="{% static 'shop/assets/images/credit-card.png' %}" alt="Safe Payment"
+                                         title="Safe Payment"/>
+                                    <div class="details"><h3>Safe Payment</h3>Pay with the world's most payment methods.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+                                    <img src="{% static 'shop/assets/images/shield.png' %}" alt="Confidence"
+                                         title="Confidence"/>
+                                    <div class="details"><h3>Confidence</h3>Protection covers your purchase and personal
+                                        data.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <form class="variants" action="{% url 'bookingdetails' %}" method="post">
+                            {% csrf_token %}
+                            <div class="product-single__meta">
+                                <h1 class="product-single__title">DETAILS</h1><br>
+                            </div>
+                            <div class="tabs-listing">
+                                <div class="tab-container">
+                                    <h3 class="acor-ttl active" rel="tab1">COLOR</h3>
+                                    <div id="tab1" class="tab-content">
+                                        <div class="product-description rte">
+                                             <select name="colorid" class="form-control" id="colorid" >
+                                                <option>Choose color...</option>
+                                                {% for i in color %}
+                                                    <option value="{{ i.colorid }}">{{i.colorname}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <br><br>
+                            <div class="tabs-listing">
+                                <div class="tab-container">
+                                    <h3 class="acor-ttl active" rel="tab2">SIZE</h3>
+                                    <div id="tab2" class="tab-content">
+                                        <div class="product-description rte">
+                                             <select name="sizeid" class="form-control" id="sizeid" >
+                                                 <option>Choose size...</option>
+                                                 {% for i in size %}
+                                                    <option value="{{ i.sizeid }}">{{i.sizename}}</option>
+                                                 {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <br><br>
+                            <div class="tabs-listing">
+                                <div class="tab-container">
+                                    <h3 class="acor-ttl active" rel="tab3">QUANTITY</h3>
+                                    <div id="tab3" class="tab-content">
+                                        <div class="product-description rte">
+                                            <input type="number" class="form-control"  id="bookingquantity"  placeholder="Enter quantity" name="bookingquantity" min="1" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <br><br>
+                            <div class="tabs-listing">
+                                <div class="tab-container">
+                                    <h3 class="acor-ttl active" rel="tab4">TOTAL</h3>
+                                    <div id="tab4" class="tab-content">
+                                        <div class="product-description rte">
+                                            <input type="number" class="form-control"  name="bookingamount" id="bookingamount" readonly >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <br><br>
+                            <input type="hidden" id="total"   name="total" value="{{sum}}">
+                            <input type="hidden" name="price" id="price" value="{{booking.productid.price}}">
+                            <input type="hidden" name="bookingid" id="bookingid" value="{{booking.bookingid}}">
+                            <button class="button button2" type="submit">CONFIRM</button>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{% url 'viewbookingbyshop' id=booking.bookingid %}"><button type="button" class="continue continue5">DONE</button></a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% include 'shop/footer.html' %}

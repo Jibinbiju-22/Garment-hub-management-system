@@ -1,0 +1,125 @@
+{% include 'admin/header.html' %}
+{% include 'admin/theme.html' %}
+{% include 'admin/sidebar.html' %}
+<div class="main-panel">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        table, th, td {
+	        border: 1px solid black;
+  	        border-collapse: collapse;
+        }
+        td {
+  	        padding: 17px;
+        }
+        th {
+            padding:17px;
+        }
+        th {
+	        background-color: #7393B3;
+	        color : white
+        }
+        tr:nth-child(odd) {
+            background-color: white;
+        }
+        a:link, a:visited, a:active, a:hover {
+            color: black;
+            text-decoration: none;
+            cursor: auto;
+        }
+        .w3-button {width:66px;}
+    </style>
+    {% load static %}
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script>
+	    $(document).ready(function () {
+<!--        alert("check")-->
+            $.ajaxSetup({
+		        headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		    });
+		    $("#productid").change(function()  {
+<!--		    alert("test")-->
+		        var productid=$(this).val();
+<!--            alert(productid);-->
+		        var i=1;
+	            $.ajax({
+				    type:"POST",
+				    url : '{% url "fillsize" %}',
+				    data : {productid :productid},
+				    dataType:"json",
+				    success : function(data) {
+				        $('#sizename').empty();
+                        $.each(data,function(key,val) {
+                            var id=val.sizeid;
+                            var deleteUrl = '{% url "deletesize" 0 %}'.replace('0', id);
+                            var editUrl = '{% url "editsize" 0 %}'.replace('0', id);
+                            var row = "<tr><td>" + i++ + "</td><td>" + val.sizename + "</td><td>" + val.materialquantity + "</td><td><a href='"+editUrl+"'><p><button class='w3-button w3-teal'>Edit</button></p></a></td> <td><a href='"+deleteUrl+"'><p><button class='w3-button w3-red'>Delete</button></p></a></td></tr>";
+                            $('#sizename').append(row);
+                        });
+				    }
+				});
+		    });
+        });
+    </script>
+    <script>
+	$(document).ready(function () {
+        <!--alert("check")-->
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+        $('#categoryid').change(function () {
+<!--        alert("test")-->
+            var categoryid = $(this).val();
+            $.ajax({
+			    type: "POST",
+				url: '{% url "fillproductbycategory" %}',
+				data: { categoryid: categoryid },
+				dataType: "json",
+				success: function (data) {
+				    $('#productid').empty();
+				    var opt = $('<option />');
+                    opt.val(0);
+                    opt.text('Choose product ...');
+                    $('#productid').append(opt);
+                    $.each(data, function(key, val) {
+                        var opt = $('<option />');
+                        opt.val(val.productid);
+                        opt.text(val.productname);
+                        $('#productid').append(opt);
+                    });
+                }
+			});
+        });
+    });
+</script>
+    <div>
+        <h4 class="card-title" align="center"><strong>VIEW SIZE</strong></h4>
+        <br>
+    </div>
+    <div class="form-group">
+        <label for="categoryid">SELECT CATEGORY</label>
+        <select name="categoryid" class="form-control" id="categoryid">
+            <option>Choose category...</option>
+            {% for i in category %}
+                <option value="{{ i.categoryid }}">{{ i.categoryname }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>SELECT PRODUCT
+                <select name="productid" class="form-control" id="productid">
+                    <option>Select category first.</option>
+                </select>
+                <th>SIZE</th>
+                <th>MATERIAL QUANTITY IN METER</th>
+                <th>EDIT</th>
+                <th>DELETE</th>
+            </tr>
+        </thead>
+        <tbody id="sizename">
+        </tbody>
+    </table>
+    {% include 'admin/footer.html' %}

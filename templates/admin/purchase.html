@@ -1,0 +1,70 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+
+<script>
+    $(document).ready(function () {
+<!--    alert("check")-->
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
+
+        $('#discount').change(function () {
+<!--		alert("test")-->
+            var purchaseamount = parseFloat($('#purchaseamount').val());
+<!--            alert(purchaseamount)-->
+            var discount = parseFloat($('#discount').val());
+<!--            alert(discount)-->
+
+         var purchasetotal = purchaseamount - discount;
+<!--             alert(purchasetotal);-->
+           $('#purchasetotal').val(purchasetotal);
+
+
+        });
+    });
+
+</script>
+
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+<div class="col-md-10 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title" align="center">PURCHASE STOCK</h4>
+                  <form class="forms-sample" action="{% url 'purchase'  %}" method="post" >
+                      {% csrf_token %}
+
+                      <div class="form-group">
+                      <label for="exampleInputUsername1">BILL NUMBER</label>
+                      <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Enter bill number" name="billnumber" required>
+                    </div>
+
+                      <div class="form-group"  >
+                      <label >PURCHASE AMOUNT</label>
+                      <input type="text" class="form-control"  id="purchaseamount"  placeholder="Enter purchase amount" name="purchaseamount" required>
+                    </div>
+
+                       <div class="form-group"  >
+                      <label >DISCOUNT</label>
+                      <input type="number" class="form-control" id="discount" placeholder="Enter discount" name="discount" min="0">
+                    </div>
+
+
+                       <div class="form-group"  >
+                      <label >PURCHASE TOTAL</label>
+                      <input type="number" class="form-control"  id="purchasetotal"   name="purchasetotal" readonly>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary me-2">OK</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+{% include 'admin/footer.html' %}

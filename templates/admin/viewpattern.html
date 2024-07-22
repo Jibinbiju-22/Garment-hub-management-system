@@ -1,0 +1,125 @@
+{% include 'admin/header.html' %}
+{% include 'admin/theme.html' %}
+{% include 'admin/sidebar.html' %}
+<div class="main-panel">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        table, th, td {
+	    border: 1px solid black;
+  	    border-collapse: collapse;
+        }
+        td {
+  	        padding: 17px;
+        }
+        th {
+            padding:17px;
+        }
+        th {
+	        background-color: #7393B3;
+	        color : white
+        }
+        tr:nth-child(odd) {
+            background-color: white;
+        }
+        a:link, a:visited, a:active, a:hover {
+        color: black;
+        text-decoration: none;
+        cursor: auto;
+        }
+        .w3-button {width:66px;}
+    </style>
+    {% load static %}
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script>
+	    $(document).ready(function () {
+<!--        alert("check")-->
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                }
+            });
+            $('#materialid').change(function () {
+<!--            alert("test")-->
+                var materialid = $(this).val();
+                $.ajax({
+				    type: "POST",
+				    url: '{% url "fillsubmaterial" %}',
+				    data: { materialid: materialid },
+				    dataType: "json",
+				    success: function (data) {
+					    $('#submaterialid').empty();
+				        var opt = $('<option />');
+                        opt.val(0);
+                        opt.text('Choose sub material...');
+                        $('#submaterialid').append(opt);
+                        $.each(data, function(key, val) {
+                                var opt = $('<option />');
+                                opt.val(val.submaterialid);
+                                opt.text(val.submaterialtype);
+                                $('#submaterialid').append(opt);
+                        });
+                    }
+			    });
+            });
+        });
+    </script>
+    <script>
+	    $(document).ready(function () {
+<!--        alert("check")-->
+            $.ajaxSetup({
+		        headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		    });
+		    $("#submaterialid").change(function()   {
+<!--		    alert("test")-->
+		        var submaterialid=$(this).val();
+<!--            alert(submaterialid);-->
+		        var i=1;
+	            $.ajax({
+				    type:"POST",
+				    url : '{% url "fillpatternforview" %}',
+				    data : {submaterialid :submaterialid},
+				    dataType:"json",
+				    success : function(data) {
+				        $('#patternname').empty();
+                        $.each(data,function(key,val) {
+                            var id=val.patternid;
+                            var editUrl = '{% url "editpattern" 0 %}'.replace('0', id);
+                            var deleteUrl = '{% url "deletepattern" 0 %}'.replace('0', id);
+                            var row = "<tr><td>" + i++ + "</td><td>" + val.patternname + "</td> <td> <img src='/images/" + val.patternphoto + "' alt= 'Pattern photo' style='width:50px; height:50px; '>  </td>   <td><a href='"+editUrl+"'><p><button class='w3-button w3-teal'>Edit</button></p></a></td> <td><a href='"+deleteUrl+"'><p><button class='w3-button w3-red'>Delete</button></p></a></td></tr>";
+                            $('#patternname').append(row);
+                        });
+				    }
+				});
+		    });
+        });
+    </script>
+    <div>
+        <h4 class="card-title" align="center"><strong>VIEW PATTERN</strong></h4>
+        <br>
+    </div>
+    <div class="form-group">
+        <label for="materialid">SELECT MATERIAL</label>
+        <select name="materialid" class="form-control" id="materialid">
+            <option>Choose material...</option>
+            {% for i in material %}
+                <option value="{{ i.materialid }}">{{ i.materialtype }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>SELECT SUB MATERIAL
+                <select name="submaterialid" class="form-control" id="submaterialid">
+                    <option>Select material first.</option>
+                </select>
+                <th>NAME</th>
+                <th>PHOTO</th>
+                <th>EDIT</th>
+                <th>DELETE</th>
+            </tr>
+        </thead>
+        <tbody id="patternname">
+        </tbody>
+    </table>
+    {% include 'admin/footer.html' %}

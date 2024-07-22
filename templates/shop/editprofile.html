@@ -1,0 +1,217 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+<script>
+	$(document).ready(function () {
+<!--alert("check")-->
+  $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+
+                $('#districtid').change(function ()
+				 {
+<!--alert("test")-->
+                    var districtid = $(this).val();
+
+                    $.ajax({
+				type: "POST",
+				url: '{% url "filllocation" %}',
+				data: { districtid: districtid },
+				dataType: "json",
+				success: function (data) {
+
+					$('#locationid').empty();
+
+				 var opt = $('<option />'); // here we're creating a new select option with for each city
+                 opt.val(0);
+                 opt.text('Choose location...');
+                 $('#locationid').append(opt);
+                $.each(data, function(key, val)
+                {
+                                var opt = $('<option />'); // here we're creating a new select option with for each city
+                                opt.val(val.locationid);
+                                opt.text(val.locationname);
+                                $('#locationid').append(opt); //here we will append these new select options to a dropdown with the id 'cities'
+                });
+                        }
+			});
+                    });
+
+
+});
+
+
+</script>
+
+{% include 'shop/header.html' %}
+
+<style>
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 13px;
+  padding: 13px;
+  width: 111px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 13px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+    a:link{
+  text-decoration: underline;
+}
+
+
+</style>
+
+<!--Body Content-->
+<br><br><br>
+<div id="page-content">
+    <!--Page Title-->
+    <div class="page-title">
+        <br><br><br><br>
+        <div class="wrapper"><h1 class="page-width" align="center">UPDATE PROFILE</h1></div>
+        <br><br>
+    </div>
+    <!--End Page Title-->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
+                <div class="mb-4">
+                    {% for i in shop %}
+                    <form method="post" action="{% url 'editprofile' id=i.loginid.loginid %}" id="CustomerLoginForm"
+                          accept-charset="UTF-8" class="contact-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="FirstName">NAME</label>
+                                    <input type="text" name="shopname" value="{{i.shopname}}" id="FirstName"
+                                           autofocus="" required>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="CustomerEmail">EMAIL</label>
+                                    <input type="email" name="email" value="{{i.loginid.email}}" id="CustomerEmail"
+                                           class="" autocorrect="off" autocapitalize="off" autofocus="" required>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>PHONE</label>
+                                    <input type="text" name="phone" value="{{i.phone}}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label> PHOTO</label><br>
+                                    <input type="hidden" name="shopphoto" value="{{i.shopphoto}}">
+                                    <img src="{{ i.shopphoto.url }}" alt="Shop photo" style="width: 100px;"><br><br>
+                                    <input type="file" class="form-control" name="shopimage">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label>ADDRESS</label>
+                                    <textarea type="text" name="address" value="{{i.address}}"
+                                              required>{{i.address}}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="districtid">SELECT DISTRICT</label>
+                                    <select name="districtid" id="districtid" class="">
+                                        <option style="color:black;" selected disable
+                                                value="{{i.locatioid.distictid.districtid}}">
+                                            {{i.locationid.districtid.districtname}}
+                                        </option>
+                                        {% for j in district %}
+                                        <option value="{{ j.districtid }}">{{ j.districtname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="locationid">SELECT LOCATION</label>
+                                    <select name="locationid" id="locationid" class="">
+                                        <option style="color:black;" selected disable
+                                                value="{{i.locationid.locationid}}">{{i.locationid.locationname}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class=" col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <br>
+                                    <input type="submit" class="btn mb-3" value="Update">
+
+
+                                </div>
+
+
+                            </div>
+                            <a href="{% url 'changepassword' %}">
+                                        <button class="button" style="vertical-align:middle" type="button" >
+                                            <span>CHANGE PASSWORD</span></button>
+                                    </a>
+
+
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--End Body Content-->
+
+{% include 'shop/footer.html' %}
+
+</div>
+</body>
+
+<!-- belle/index.html   11 Nov 2019 12:20:55 GMT -->
+</html>
+

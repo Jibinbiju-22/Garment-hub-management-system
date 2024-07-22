@@ -1,0 +1,140 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+<script>
+	$(document).ready(function () {
+<!--alert("check")-->
+  $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+                $('#materialid').change(function ()
+				 {
+<!--alert("test")-->
+                    var materialid = $(this).val();
+                    $.ajax({
+				type: "POST",
+				url: '{% url "fillsubmaterial" %}',
+				data: { materialid: materialid },
+				dataType: "json",
+				success: function (data) {
+					$('#submaterialid').empty();
+				 var opt = $('<option />'); // here we're creating a new select option with for each city
+                 opt.val(0);
+                 opt.text('Choose sub material...');
+                 $('#submaterialid').append(opt);
+                $.each(data, function(key, val)
+                {
+                                var opt = $('<option />'); // here we're creating a new select option with for each city
+                                opt.val(val.submaterialid);
+                                opt.text(val.submaterialtype);
+                                $('#submaterialid').append(opt); //here we will append these new select options to a dropdown with the id 'cities'
+                });
+                        }
+			});
+                    });
+                    });
+
+</script>
+<script>
+	$(document).ready(function () {
+<!--alert("check2")-->
+  $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+                     $('#submaterialid').change(function ()
+				 {
+<!--alert("test2")-->
+                    var submaterialid = $(this).val();
+                     $.ajax({
+				type: "POST",
+				url: '{% url "fillpattern" %}',
+				data: { submaterialid: submaterialid },
+				dataType: "json",
+				success: function (data) {
+
+					$('#patternid').empty();
+
+				 var opt = $('<option />'); // here we're creating a new select option with for each city
+                 opt.val(0);
+                 opt.text('Choose pattern...');
+                 $('#patternid').append(opt);
+                $.each(data, function(key, val)
+                {
+                                var opt = $('<option />'); // here we're creating a new select option with for each city
+                                opt.val(val.patternid);
+                                opt.text(val.patternname);
+                                $('#patternid').append(opt); //here we will append these new select options to a dropdown with the id 'cities'
+                });
+                        }
+			});
+                    });
+});
+</script>
+{% include 'admin/header.html' %}
+{% include 'admin/theme.html' %}
+{% include 'admin/sidebar.html' %}
+<div class="main-panel">
+    <div class="col-md-10 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">PRODUCT REGISTRATION</h4>
+                <form class="forms-sample" action="{% url 'productregistration' %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>PRODUCT NAME</label>
+                        <input type="text" class="form-control" id="exampleInputUsername1"
+                               placeholder="Enter product name" name="productname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>PRICE</label>
+                        <input type="text" class="form-control" placeholder="Enter product price" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>DESCRIPTION</label>
+                        <textarea class="form-control" placeholder="Enter product description" name="description"
+                                  required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>SELECT CATEGORY</label>
+                        <select name="categoryid" class="form-control">
+                            <option>Ideal for...</option>
+                            {% for i in category %}
+                            <option value="{{ i.categoryid }}">{{ i.categoryname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="materialid">SELECT MATERIAL</label>
+                        <select name="materialid" class="form-control" id="materialid">
+                            <option>Choose material...</option>
+                            {% for i in material %}
+                            <option value="{{ i.materialid }}">{{ i.materialtype }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="submaterialid">SELECT SUB-MATERIAL</label>
+                        <select name="submaterialid" class="form-control" id="submaterialid">
+                            <option>Select material first.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="patternid">SELECT PATTERN</label>
+                        <select name="patternid" class="form-control" id="patternid">
+                            <option>Select sub material first.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label> PHOTO</label><br>
+                        <input type="file" class="form-control" name="productphoto" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'admin/footer.html' %}

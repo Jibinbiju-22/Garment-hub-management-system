@@ -1,0 +1,133 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+
+  table, th, td {
+	border: 1px solid black;
+  	border-collapse: collapse;
+}
+ td {
+  	padding: 17px;
+}
+th {
+padding:17px;}
+th {
+	background-color: #7393B3;
+	color : white
+}
+
+  tr:nth-child(odd) {
+  background-color: white;
+  }
+
+  a:link, a:visited, a:active, a:hover {
+  color: black;
+  text-decoration: none;
+  cursor: auto;
+}
+
+.w3-button {width:66px;}
+
+
+    </style>
+
+    {% load static %}
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script>
+	$(document).ready(function () {
+<!--alert("check")-->
+
+$.ajaxSetup({
+		headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		});
+		$("#districtid").change(function()
+		{
+<!--		alert("test")-->
+		var districtid=$(this).val();
+<!--alert(districtid);-->
+		var i=1;
+	$.ajax({
+				type:"POST",
+				url : '{% url "filllocation" %}',
+				data : {districtid :districtid},
+				dataType:"json",
+				success : function(data)
+				{
+				$('#locationname').empty();
+				 // Populate table with new data
+                    $.each(data,function(key,val) {
+                    var id=val.locationid;
+                    var deleteUrl = '{% url "deletelocation" 0 %}'.replace('0', id);
+                    var editUrl = '{% url "editlocation" 0 %}'.replace('0', id);
+
+                    var row = "<tr><td>" + i++ + "</td><td>" + val.locationname + "</td><td><a href='"+editUrl+"'><p><button class='w3-button w3-teal'>Edit</button></p></a></td> <td><a href='"+deleteUrl+"'><p><button class='w3-button w3-red'>Delete</button></p></a></td></tr>";
+                          $('#locationname').append(row);
+                    });
+				}
+				});
+		});
+});
+
+
+    </script>
+
+    <div>
+        <h4 class="card-title" align="center"><strong>VIEW LOCATION</strong></h4>
+        <br>
+    </div>
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>SELECT DISTRICT
+                <select name="districtid" class="form-control" id="districtid">
+                    {% for i in district %}
+                    <option value="{{ i.districtid }}">{{ i.districtname }}</option>
+                    {% endfor %}
+                </select>
+
+            <th>NAME</th>
+            <th>EDIT</th>
+            <th>DELETE</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody id="locationname">
+        {% for i in location %}
+
+        <tr>
+
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.locationname }}</td>
+            <div class="w3-container">
+                <td><a href="{% url 'editlocation' id=i.locationid %}">
+                    <p>
+                        <button class="w3-button w3-teal">Edit</button>
+                    </p>
+                </a></td>
+                <td><a href="{% url 'deletelocation' id=i.locationid %}">
+                    <p>
+                        <button class="w3-button w3-red">Delete</button>
+                    </p>
+                </a></td>
+            </div>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+    {% include 'admin/footer.html' %}

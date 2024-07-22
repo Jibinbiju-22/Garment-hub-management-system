@@ -1,0 +1,37 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+<div class="main-panel">
+<div id="container" style="width: 75%;">
+    <canvas id="pie-chart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+
+    var config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            'red', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+          ],
+          label: 'test'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script>
+{% include 'admin/footer.html' %}

@@ -1,0 +1,220 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+
+  table, th, td {
+	border: 1px solid black;
+  	border-collapse: collapse;
+}
+ td {
+  	padding: 17px;
+
+}
+th {
+padding:17px;}
+th {
+	background-color: #7393B3;
+	color : white
+}
+tr:nth-child(even) {
+  background-color: white;
+
+  }
+
+  a:link, a:visited, a:active, a:hover {
+  color: black;
+  text-decoration: none;
+  cursor: auto;
+}
+
+.w3-button {width:111px;}
+
+  /* Button Styles */
+  .classic-button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .classic-button-green {
+    background-color: #4CAF50;
+  }
+
+  .classic-button-red {
+
+    background-color: #f44336;
+  }
+
+  .classic-button-green:hover {
+    background-color: #45a049;
+  }
+
+  .classic-button-red:hover {
+    background-color: #d32f2f;
+  }
+
+  /* Remove default styling on anchor tag */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+.price-tag {
+    width: 366px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    margin: 20px auto;
+  }
+  .price-tag h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    font-style: italic;
+  }
+  .price-tag p {
+    color: #777;
+    font-size: 1.2rem;
+    margin: 20px auto;
+  }
+
+
+
+
+    </style>
+
+    <div>
+        <h4 class="card-title" align="center"><strong>DETAILS</strong></h4>
+        <br>
+    </div>
+
+    <table>
+
+        <tr>
+
+            <th>NAME</th>
+            <th>PHOTO</th>
+            <th>PRICE IN RS.</th>
+
+            <th>IDEAL FOR</th>
+
+            <th>MORE</th>
+
+
+        </tr>
+
+
+        <tr>
+
+            <td>{{ product.productid.productname }}</td>
+            <td><img src="{{ product.productid.productphoto.url }}" alt="Product photo"
+                     style="width:50px; height:50px; "></td>
+            <td>{{ product.productid.price }}</td>
+            <td>{{ product.productid.categoryid.categoryname }}</td>
+            <div class="w3-container">
+
+                <td><a href="{% url 'viewproductmorebyadmin' id=product.productid.productid %}">
+                    <p>
+                        <button class="w3-button w3-blue">More</button>
+                    </p>
+                </a></td>
+
+            </div>
+
+        </tr>
+
+
+    </table>
+
+    <br><br><br>
+
+    <table>
+
+        <tr>
+            <th>SL NO</th>
+            <th>SIZE</th>
+            <th>QUANTITY</th>
+            <th>COLOR</th>
+
+
+        </tr>
+
+        {% for i in booking %}
+
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.sizeid.sizename }}</td>
+
+            <td>{{ i.bookingquantity }}</td>
+
+            <td>{{ i.colorid.colorname }}</td>
+
+
+        </tr>
+
+
+        {% endfor %}
+
+    </table>
+
+
+    <br><br><br>
+
+    <table>
+
+        <tr>
+
+            <th>SHOP</th>
+            <th>PHOTO</th>
+            <th>PHONE</th>
+            <th>EMAIL</th>
+
+
+            <th>REGISTRATION DATE</th>
+
+            <th>DETAILS</th>
+        </tr>
+
+
+        <tr>
+
+            <td>{{ shop.shopname }}</td>
+            <td><img src="{{ shop.shopphoto.url }}" alt="Shop photo" style="width:50px; height:50px; "></td>
+            <td>{{ shop.phone }}</td>
+            <td>{{ shop.loginid.email }}</td>
+
+
+            <td>{{ shop.registrationdate }}</td>
+            <div class="w3-container">
+
+                <td><a href="{% url 'viewshopmore' id=shop.shopid %}">
+                    <p>
+                        <button class="w3-button w3-blue">More</button>
+                    </p>
+                </a></td>
+            </div>
+        </tr>
+
+
+    </table>
+    <br><br>
+    <br>
+    {% include 'admin/footer.html' %}

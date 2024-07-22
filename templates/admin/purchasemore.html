@@ -1,0 +1,179 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+<script>
+	$(document).ready(function () {
+<!--        alert("check")-->
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+        $('#materialid').change(function () {
+<!--            alert("test")-->
+            var materialid = $(this).val();
+            $.ajax({
+				type: "POST",
+				url: '{% url "fillsubmaterial" %}',
+				data: { materialid: materialid },
+				dataType: "json",
+				success: function (data) {
+					$('#submaterialid').empty();
+				    var opt = $('<option />');
+                    opt.val(0);
+                    opt.text('Choose sub material...');
+                    $('#submaterialid').append(opt);
+                    $.each(data, function(key, val) {
+                                var opt = $('<option />');
+                                opt.val(val.submaterialid);
+                                opt.text(val.submaterialtype);
+                                $('#submaterialid').append(opt);
+                    });
+                }
+			});
+		});
+	});
+</script>
+<script>
+	$(document).ready(function () {
+<!--        alert("check2")-->
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+        $('#submaterialid').change(function ()  {
+<!--            alert("test2")-->
+            var submaterialid = $(this).val();
+            $.ajax({
+				type: "POST",
+				url: '{% url "fillpattern" %}',
+				data: { submaterialid: submaterialid },
+				dataType: "json",
+				success: function (data) {
+					$('#patternid').empty();
+				    var opt = $('<option />');
+                    opt.val(0);
+                    opt.text('Choose pattern...');
+                    $('#patternid').append(opt);
+                    $.each(data, function(key, val) {
+                                var opt = $('<option />');
+                                opt.val(val.patternid);
+                                opt.text(val.patternname);
+                                $('#patternid').append(opt);
+                    });
+                }
+			});
+		});
+	});
+</script>
+{% include 'admin/header.html' %}
+{% include 'admin/theme.html' %}
+{% include 'admin/sidebar.html' %}
+<style>
+    .continue {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 13px;
+        padding: 13px;
+        width: 111px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+    }
+    .continue2 {background-color: #008CBA;} /* Blue */
+    .continue3 {background-color: #f44336;} /* Red */
+    .continue4 {background-color: #e7e7e7; color: black;} /* Gray */
+    .continue5 {background-color: #555555;} /* Black */
+    .button {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 13px;
+        padding: 13px;
+        width: 111px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+    }
+    .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+     }
+    .button:hover span {
+        padding-right: 13px;
+    }
+    .button:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+</style>
+<div class="main-panel">
+    <div class="col-md-10 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" align="center">PURCHASE STOCK</h4>
+                <form class="forms-sample" action="{% url 'purchasemore'  %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>SELECT MATERIAL</label>
+                        <select name="materialid" class="form-control" id="materialid">
+                            <option>Choose material...</option>
+                            {% for i in material %}
+                                <option value="{{ i.materialid }}">{{ i.materialtype }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="submaterialid">SELECT SUB-MATERIAL</label>
+                        <select name="submaterialid" class="form-control" id="submaterialid">
+                            <option>Select material first.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="patternid">SELECT PATTERN</label>
+                        <select name="patternid" class="form-control" id="patternid">
+                            <option>Select sub material first.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>SELECT COLOR</label>
+                        <select name="colorid" class="form-control" id="colorid">
+                            <option>Choose color...</option>
+                            {% for i in color %}
+                                <option value="{{ i.colorid }}">{{ i.colorname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>QUANTITY</label>
+                        <input type="number" class="form-control" placeholder="Measured in meters"
+                               name="purchasequantity" min="1" required>
+                    </div>
+                    <button type="submit" class="button" style="vertical-align:middle"><span>CONTINUE</span></button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/admin/viewpurchase">
+                        <button type="button" class="continue continue5">DONE</button>
+                    </a>
+                    <input type="hidden" name="purchaseid" value="{{purchase.purchaseid}}">
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'admin/footer.html' %}

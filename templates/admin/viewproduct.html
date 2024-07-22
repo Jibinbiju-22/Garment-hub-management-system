@@ -1,0 +1,86 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+  table, th, td {
+	border: 1px solid black;
+  	border-collapse: collapse;
+}
+ td {
+  	padding: 17px;
+
+}
+th {
+padding:17px;}
+th {
+	background-color: #7393B3;
+	color : white
+}
+tr:nth-child(even) {
+  background-color: white;
+
+  }
+
+  a:link, a:visited, a:active, a:hover {
+  color: black;
+  text-decoration: none;
+  cursor: auto;
+}
+
+.w3-button {width:66px;}
+
+</style>
+
+<div>
+	<h4 class="card-title" align="center"><strong>VIEW PRODUCT</strong></h4>
+	<br>
+	</div>
+
+  <table>
+
+  <tr>
+	  <th>SL NO</th>
+    <th>NAME</th>
+      <th>PHOTO</th>
+      <th>PRICE IN RS.</th>
+
+       <th>IDEAL FOR</th>
+      <th>EDIT</th>
+  	<th>DELETE</th>
+      <th>MORE</th>
+
+
+  </tr>
+
+	  {% for i in product %}
+
+<tr>
+	<td>{{ forloop.counter }}</td>
+<td>{{ i.productname }}</td>
+    <td><img src="{{ i.productphoto.url }}" alt="Product photo" style="width:50px; height:50px; "></td>
+    <td>{{ i.price }}</td>
+
+      <td>{{ i.categoryid.categoryname }}</td>
+	<div class="w3-container">
+        <td><a href="{% url 'editproduct' id=i.productid %}"><p><button class="w3-button w3-teal">Edit</button></p></a></td>
+        <td><a href="{% url 'deleteproduct' id=i.productid %}"><p><button class="w3-button w3-red">Delete</button></p></a></td>
+     <td><a href="{% url 'viewproductmorebyadmin' id=i.productid %}"><p><button class="w3-button w3-blue">More</button></p></a></td>
+
+	</div>
+
+</tr>
+
+
+	  {% endfor %}
+
+</table>
+
+{% include 'admin/footer.html' %}

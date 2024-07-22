@@ -1,0 +1,108 @@
+{% if not request.session.loginid %}
+<script>
+ alert('Login first');
+ window.location.replace('/guest/login');
+</script>
+{% endif %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+{% load static %}
+<!-- belle/index.html   11 Nov 2019 12:16:10 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Shop</title>
+<meta name="description" content="description">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Plugins CSS -->
+<link rel="stylesheet" href="{% static 'guest/assets/css/plugins.css' %}">
+<!-- Bootstap CSS -->
+<link rel="stylesheet" href="{% static 'guest/assets/css/bootstrap.min.css' %}">
+<!-- Main Style CSS -->
+<link rel="stylesheet" href="{% static 'guest/assets/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'guest/assets/css/responsive.css' %}">
+</head>
+<body class="template-index belle template-index-belle">
+<div id="pre-loader">
+    <img src="{% static 'guest/assets/images/loader.gif' %}" alt="Loading..." />
+</div>
+<div class="pageWrapper">
+
+    <!--Top Header-->
+    <div class="top-header">
+        <div class="container-fluid">
+            <div class="row">
+            	<div class="col-10 col-sm-8 col-md-5 col-lg-4">
+                    <p >GARMENT HUB</p>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
+                	<div class="text-center"><p class="top-header_middle-text"> Welcome</p></div>
+                </div>
+                <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
+                	<span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
+                    <ul class="customer-links list-inline">
+                        <li>
+                            <style>
+                                a:link{
+  text-decoration: underline;
+}
+                            </style>
+                            <a href="{% url 'logout' %}">Logout</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Top Header-->
+    <!--Header-->
+    <div class="header-wrap classicHeader animated d-flex">
+    	<div class="container-fluid">
+            <div class="row align-items-center">
+            	<!--Desktop Logo-->
+                <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+
+                </div>
+                <!--End Desktop Logo-->
+                <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+                	<div class="d-block d-lg-none">
+                        <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                        	<i class="icon anm anm-times-l"></i>
+                            <i class="anm anm-bars-r"></i>
+                        </button>
+                    </div>
+                	<!--Desktop Menu-->
+                	<nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
+                        <ul id="siteNav" class="site-nav medium center hidearrow">
+                       <br>     <li class="lvl1 parent megamenu"><a href="/shop/home">Home <i class="anm anm-angle-down-l"></i></a>
+                            </li>
+                            <li class="lvl1 parent megamenu"><a href="/shop/viewcategory" >Shop <i class="anm anm-angle-down-l"></i></a>
+                            </li>
+                        <li class="lvl1 parent megamenu"><a href="/shop/viewproduct">Product <i class="anm anm-angle-down-l"></i></a>
+                        </li>
+                             <li class="lvl1 parent megamenu">
+                                 <form action="{% url 'search' %}" method="get">
+                                 <input type="text" id="search" name="search" placeholder="Search product...">
+
+                            </li>
+                            <li class="lvl1 parent megamenu">
+                             <input type="submit" value="Search">
+                                 </form>
+                            </li>
+                      </ul>
+                    </nav>
+                    <!--End Desktop Menu-->
+                </div>
+                <!--Mobile Logo-->
+                <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                	<div class="logo">
+                        <a href="index.html">
+                            <img src="{% static 'shop/assets/images/logo.svg' %}" alt="Belle Multipurpose Html Template" title="Belle Multipurpose Html Template" />
+                        </a>
+                    </div>
+                </div>
+
+        	</div>
+        </div>
+    </div>
+    <!--End Header-->

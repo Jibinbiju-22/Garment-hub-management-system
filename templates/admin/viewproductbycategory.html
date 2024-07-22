@@ -1,0 +1,143 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+
+  table, th, td {
+	border: 1px solid black;
+  	border-collapse: collapse;
+}
+ td {
+  	padding: 17px;
+}
+th {
+padding:17px;}
+th {
+	background-color: #7393B3;
+	color : white
+}
+
+  tr:nth-child(odd) {
+  background-color: white;
+  }
+
+  a:link, a:visited, a:active, a:hover {
+  color: black;
+  text-decoration: none;
+  cursor: auto;
+}
+
+.w3-button {width:66px;}
+
+
+
+
+    </style>
+
+    {% load static %}
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script>
+	$(document).ready(function () {
+<!--alert("check")-->
+
+$.ajaxSetup({
+		headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		});
+		$("#categoryid").change(function()
+		{
+<!--		alert("test")-->
+		var categoryid=$(this).val();
+<!--alert(categoryid);-->
+		var i=1;
+	$.ajax({
+				type:"POST",
+				url : '{% url "fillproductbycategory" %}',
+				data : {categoryid :categoryid},
+				dataType:"json",
+				success : function(data)
+				{
+				$('#productname').empty();
+				 // Populate table with new data
+                    $.each(data,function(key,val) {
+                    var id=val.productid;
+                    var deleteUrl = '{% url "deleteproduct" 0 %}'.replace('0', id);
+                    var editUrl = '{% url "editproduct" 0 %}'.replace('0', id);
+
+                    var row = "<tr><td>" + i++ + "</td><td>" + val.productname + "</td> <td> <img src= '/images/" + val.productphoto + "' alt= 'Product photo' style='width:50px; height:50px; '>  </td> <td>" + val.price + "</td> <td>" + val.description + "</td> <td><a href='"+editUrl+"'><p><button class='w3-button w3-teal'>Edit</button></p></a></td> <td><a href='"+deleteUrl+"'><p><button class='w3-button w3-red'>Delete</button></p></a></td></tr>";
+                          $('#productname').append(row);
+                    });
+				}
+				});
+		});
+});
+
+
+
+
+    </script>
+
+    <div>
+        <h4 class="card-title" align="center"><strong>VIEW PRODUCT BY CATEGORY</strong></h4>
+        <br>
+    </div>
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>Select Category
+                <select name="categoryid" class="form-control" id="categoryid">
+                    {% for i in category %}
+                    <option value="{{ i.categoryid }}">{{ i.categoryname }}</option>
+                    {% endfor %}
+                </select>
+
+            <th>NAME</th>
+            <th>PHOTO</th>
+            <th>PRICE</th>
+            <th>DESCRIPTION</th>
+            <th>EDIT</th>
+            <th>DELETE</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody id="productname">
+        {% for i in product %}
+
+        <tr>
+
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.productname }}</td>
+            <td><img src="/images/{{ i.productphoto }}" alt="Product photo" style="width:50px; height:50px; "></td>
+            <td>{{ i.price }}</td>
+            <td>{{ i.description }}</td>
+            <div class="w3-container">
+                <td><a href="{% url 'editproduct' id=i.productid %}">
+                    <p>
+                        <button class="w3-button w3-teal">Edit</button>
+                    </p>
+                </a></td>
+                <td><a href="{% url 'deleteproduct' id=i.productid %}">
+                    <p>
+                        <button class="w3-button w3-red">Delete</button>
+                    </p>
+                </a></td>
+            </div>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+    {% include 'admin/footer.html' %}

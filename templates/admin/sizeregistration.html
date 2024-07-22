@@ -1,0 +1,74 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+<script>
+	$(document).ready(function () {
+        <!--alert("check")-->
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+        $('#categoryid').change(function () {
+            <!--alert("test")-->
+            var categoryid = $(this).val();
+            $.ajax({
+			    type: "POST",
+				url: '{% url "fillproductbycategory" %}',
+				data: { categoryid: categoryid },
+				dataType: "json",
+				success: function (data) {
+				    $('#productid').empty();
+				    var opt = $('<option />');
+                    opt.val(0);
+                    opt.text('Choose product ...');
+                    $('#productid').append(opt);
+                    $.each(data, function(key, val) {
+                        var opt = $('<option />');
+                        opt.val(val.productid);
+                        opt.text(val.productname);
+                        $('#productid').append(opt);
+                    });
+                }
+			});
+        });
+    });
+</script>
+{% include 'admin/header.html' %}
+{% include 'admin/theme.html' %}
+{% include 'admin/sidebar.html' %}
+<div class="main-panel">
+    <div class="col-md-10 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title" align="center">SIZE REGISTRATION</h4>
+                  <form class="forms-sample" action="{% url 'sizeregistration' %}" method="post">
+                      {% csrf_token %}
+                    <div class="form-group">
+                        <label for="categoryid">SELECT CATEGORY</label>
+                        <select name="categoryid" class="form-control" id="categoryid" >
+                            <option>Choose category...</option>
+                            {% for i in category %}
+                            <option value="{{ i.categoryid }}">{{ i.categoryname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label for="productid">SELECT PRODUCT</label>
+                        <select name="productid" class="form-control" id="productid" >
+                            <option>Select category first.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label >SIZE</label>
+                      <input type="text" class="form-control"  placeholder="Enter size" name="sizename" required>
+                    </div>
+                    <div class="form-group">
+                      <label >QUANTITY</label>
+                      <input type="number" class="form-control"  placeholder="Enter material quantity in meter" name="materialquantity" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                  </form>
+                </div>
+              </div>
+    </div>
+{% include 'admin/footer.html' %}

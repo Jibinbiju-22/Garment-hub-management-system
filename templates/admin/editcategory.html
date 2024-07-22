@@ -1,0 +1,34 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+<div class="col-md-10 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title" align="center">EDIT CATEGORY</h4>
+                  <form class="forms-sample" action="{% url 'editcategory' category.categoryid %}" method="post"  enctype="multipart/form-data">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">CATEGORY NAME</label>
+                      <input type="text" class="form-control" id="exampleInputUsername1"  name="categoryname" value="{{category.categoryname}}" required>
+                    </div>
+
+                      <div class="form-group">
+                      <label> PHOTO</label><br>
+                       <input type="hidden"  name="categoryphoto"   value="{{category.categoryphoto}}" >
+                           <img src="{{ category.categoryphoto.url }}" alt="Category photo" style="width: 100px;"><br><br>
+                           <input type="file" class="form-control" name="categoryimage">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+{% include 'admin/footer.html' %}

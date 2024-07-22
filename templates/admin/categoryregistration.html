@@ -1,0 +1,78 @@
+ {% load static %}
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script>
+	$(document).ready(function () {
+<!--alert("check")-->
+
+$.ajaxSetup({
+		headers : {"X-CSRFToken" : '{{csrf_token}}'}
+		});
+		$("#categoryname").change(function()
+		{
+<!--		alert("test")-->
+		var categoryname=$(this).val();
+<!--alert(categoryname);-->
+		var i=1;
+	$.ajax({
+				type:"POST",
+				url : '{% url "categoryexist" %}',
+				data : {categoryname :categoryname},
+				dataType:"json",
+				success: function(data) {
+    var categoryExists = false;
+
+    $.each(data, function(key, val) {
+        var id = val.categoryid;
+        if (id !== null) {
+            categoryExists = true;
+            return false; // Exit the loop since we found a category
+        }
+    });
+
+    if (categoryExists) {
+        $('#alertmessage').text('Category already exists!').show();
+    } else {
+        $('#alertmessage').hide();
+    }
+}
+
+				});
+		});
+});
+
+
+    </script>
+
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+<div class="col-md-10 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title" align="center">CATEGORY REGISTRATION</h4>
+                  <form class="forms-sample" action="{% url 'categoryregistration' %}" method="post"  enctype="multipart/form-data">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                      <label for="categoryname">CATEGORY NAME</label>
+                      <input type="text" class="form-control" id="categoryname" placeholder="Enter category name" name="categoryname" required>
+                       <br> <span id="alertmessage" style=" color:red;"></span>
+                    </div>
+
+                      <div class="form-group">
+                      <label> PHOTO</label><br>
+                      <input type="file"    class="form-control" name="categoryphoto" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+{% include 'admin/footer.html' %}

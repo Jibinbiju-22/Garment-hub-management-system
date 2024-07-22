@@ -1,0 +1,235 @@
+
+
+{% include 'shop/header.html' %}
+{% load static %}
+
+<style>
+.button {
+  background-color: #f4511e; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button1 {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+</style>
+
+<br><br><br><br><br><br><br><br>
+        <!--Body Content-->
+        <div id="page-content">
+            <!--MainContent-->
+            <div id="MainContent" class="main-content" role="main">
+
+
+                <div id="ProductSection-product-template" class="product-template__container prstyle2 container">
+                    <!--#ProductSection-product-template-->
+                    <div class="product-single product-single-1">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="product-details-img product-single__photos bottom">
+                                    <div class="zoompro-wrap product-zoom-right pl-20">
+                                        <div class="zoompro-span">
+                                            <img class="blur-up lazyload zoompro" data-zoom-image="/images/{{ booking.productid.productphoto }}" alt="" src="/images/{{ booking.productid.productphoto }}" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--Product Feature-->
+                                <div class="prFeatures"><br><br><br><br>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+
+                                            <div class="details"><h3>BOOKING DATE</h3><br>{{booking.bookingdate}}</div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+
+                                            <div class="details"><h3>DELIVERY DATE</h3><br>{{booking.deliverydate}}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--End Product Feature-->
+                                  <!--Product Feature-->
+                                <div class="prFeatures">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+
+                                            <div class="details"><h3>STATUS</h3><br>{{booking.bookingstatus}}</div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+                                             <div class="details"><h3>PAYMENT DATE</h3><br>{{payment.paymentdate}}</div>
+                                            <div class="details"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--End Product Feature-->
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="product-single__meta">
+                                    <h1 class="product-single__title">{{booking.productid.productname}}</h1><br>
+
+                                    <p class="product-single__price product-single__price-product-template">
+
+
+                                        <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                                            <span id="ProductPrice-product-template"><span class="money">Rs. {{payment.paymentamount}}</span></span>
+                                        </span>
+
+                                    </p>
+
+                            </div>
+                            	<!--Product Tabs-->
+                                <div class="tabs-listing">
+                                    <div class="tab-container">
+                                    	<h3 class="acor-ttl active" rel="tab1">Product Description</h3>
+                                        <div id="tab1" class="tab-content">
+                                            <div class="product-description rte">
+                                                <p>{{booking.productid.description}}</p>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!--End Product Tabs-->
+
+                                <!--Product Tabs-->
+                             <br><br>   <div class="tabs-listing">
+                                    <div class="tab-container">
+                                    	<h3 class="acor-ttl active" rel="tab2">Material Details</h3>
+                                        <div id="tab2" class="tab-content">
+                                            <div class="product-description rte">
+                                                <p>Material Type : {{booking.productid.patternid.submaterialid.materialid.materialtype}}</p>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!--End Product Tabs-->
+
+                                 <!--Product Tabs-->
+                             <br><br>   <div class="tabs-listing">
+                                    <div class="tab-container">
+                                    	<h3 class="acor-ttl active" rel="tab3">Sub Material Details</h3>
+                                        <div id="tab3" class="tab-content">
+                                            <div class="product-description rte">
+                                                <p>Sub Material Type : {{booking.productid.patternid.submaterialid.submaterialtype}}</p>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!--End Product Tabs-->
+
+                                <!--Product Tabs-->
+                             <br><br>   <div class="tabs-listing">
+                                    <div class="tab-container">
+                                    	<h3 class="acor-ttl active" rel="tab4">Pattern Details</h3>
+                                        <div id="tab4" class="tab-content">
+                                            <div class="product-description rte">
+                                                <p>Pattern Name : {{booking.productid.patternid.patternname}}</p>
+                                                  <p>Pattern Photo : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<img src="/images/{{ booking.productid.patternid.patternphoto }}" alt="Pattern photo" style="width:200px; height:200px; "></p>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!--End Product Tabs-->
+
+                                 <!--Product Tabs-->
+                             <br><br>   <div class="tabs-listing">
+                                    <div class="tab-container">
+                                    	<h3 class="acor-ttl active" rel="tab5">Category Details</h3>
+                                        <div id="tab5" class="tab-content">
+                                            <div class="product-description rte">
+                                                <p>Ideal for : {{booking.productid.categoryid.categoryname}}</p>
+
+                                            </div>
+                                        </div>
+
+ <br><br><br><br>
+
+                                        <form action="" method="post" class="cart style2">
+                		<table>
+                            <thead class="cart__row cart__header">
+                                <tr>
+                                    <th  class="text-left">SIZE</th>
+                                    <th class="text-left">QUANTITY</th>
+                                    <th class="text-left">COLOR</th>
+
+                                </tr>
+                            </thead>
+                    		<tbody>
+{% for i in bookingdetails %}
+                                <tr class="cart__row border-bottom line1 cart-flex border-top">
+
+                                   <td>{{i.sizeid.sizename}}</td>
+                                     <td>{{i.bookingquantity}}</td>
+                                     <td>{{i.colorid.colorname}}</td>
+
+                                </tr>
+
+{% endfor %}
+
+                            </tbody>
+
+                    </table><br><br><br>
+                    </form>
+
+
+
+                                    </div>
+                                </div>
+                                <!--End Product Tabs-->
+
+                        	</div>
+                    	</div>
+
+                    <!--End-product-single-->
+
+                    </div>
+                	<!--#ProductSection-product-template-->
+            	</div>
+            <!--MainContent-->
+        </div>
+    	<!--End Body Content-->
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+{% include 'shop/footer.html' %}
+
+<!-- belle/product-layout-2.html   11 Nov 2019 12:42:40 GMT -->

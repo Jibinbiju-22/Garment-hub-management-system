@@ -1,0 +1,148 @@
+{% load static %}
+<script src="{% static 'jquery.min.js' %}"></script>
+<script>
+	$(document).ready(function () {
+        <!--alert("check")-->
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        });
+        $('#districtid').change(function ()		 {
+            <!--alert("test")-->
+            var districtid = $(this).val();
+            $.ajax({
+				type: "POST",
+				url: '{% url "filllocation" %}',
+				data: { districtid: districtid },
+				dataType: "json",
+				success: function (data) {
+                    $('#locationid').empty();
+				    var opt = $('<option />');
+                    opt.val(0);
+                    opt.text('Choose location...');
+                    $('#locationid').append(opt);
+                    $.each(data, function(key, val) {
+                                var opt = $('<option />');
+                                opt.val(val.locationid);
+                                opt.text(val.locationname);
+                                $('#locationid').append(opt);
+                    });
+                }
+			});
+        });
+    });
+</script>
+{% include 'guest/header.html' %}
+<style>
+    a:link {
+    text-decoration: underline;
+    }
+</style>
+<!--Body Content-->
+<br><br><br>
+<div id="page-content">
+    <!--Page Title-->
+    <div class="page-title">
+        <div class="wrapper"><h1 class="page-width" align="center">CREATE AN ACCOUNT</h1></div><br><br>
+    </div>
+    <!--End Page Title-->
+        <div class="container">
+        	<div class="row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 main-col offset-md-3">
+                	<div class="mb-4">
+                       <form method="post" action="{% url 'registration' %}" id="CustomerLoginForm" accept-charset="UTF-8" class="contact-form" enctype="multipart/form-data">
+                           {% csrf_token %}
+                          <div class="row">
+	                          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="form-group">
+                                    <label for="FirstName">NAME</label>
+                                    <input type="text" name="shopname" placeholder="Enter shop name" id="FirstName" autofocus="" required>
+                                </div>
+                               </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="CustomerEmail">EMAIL</label>
+                                        <input type="email" name="email" placeholder="Enter email" id="CustomerEmail" class="" autocorrect="off" autocapitalize="off" autofocus="" required>
+                                    </div>
+                                 </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label>PHONE</label>
+                                        <input type="text" name="phone" placeholder="Enter phone" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="CustomerPassword">PASSWORD</label>
+                                        <input type="password" value="" name="password" placeholder="Enter password" id="CustomerPassword" class="" required>
+                                    </div>
+                                </div>
+						        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label>ADDRESS</label>
+									    <textarea type="text" name="address" placeholder="Enter address" required></textarea>
+                                    </div>
+                                </div>
+						        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="districtid">SELECT DISTRICT</label>
+                                        <select   name="districtid"  id="districtid" class="" required>
+										    <option>Choose district...</option>
+                                            {% for i in district %}
+                                                <option value="{{ i.districtid }}">{{ i.districtname }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="locationid">SELECT LOCATION</label>
+                                        <select   name="locationid"  id="locationid" class="" required>
+										    <option>Select district first.</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label>PHOTO</label>
+                                        <input type="file" name="shopphoto" placeholder="" required>
+                                    </div>
+                                </div>
+                          </div>
+                           <br>
+                           <div class="row">
+                               <div class="text-center col-12 col-sm-12 col-md-12 col-lg-12">
+                                   <input type="submit" class="btn mb-3" value="Create">
+                                    <p class="mb-4">
+									    Already have account ?&nbsp;
+								        <a href="/guest/login" id="customer_register_link">Login</a>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+               	</div>
+            </div>
+        </div>
+</div>
+<!--End Body Content-->
+<!--Scoll Top-->
+<span id="site-scroll"><i class="icon anm anm-angle-up-r"></i></span>
+<!--End Scoll Top-->
+<!-- Including Jquery -->
+     <script src="{% static 'shop/assets/js/vendor/jquery-3.3.1.min.js' %}"></script>
+     <script src="{% static 'shop/assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+     <script src="{% static 'shop/assets/js/vendor/jquery.cookie.js' %}"></script>
+     <script src="{% static 'shop/assets/js/vendor/wow.min.js' %}"></script>
+     <!-- Including Javascript -->
+     <script src="{% static 'shop/assets/js/bootstrap.min.js' %}"></script>
+     <script src="{% static 'shop/assets/js/plugins.js' %}"></script>
+     <script src="{% static 'shop/assets/js/popper.min.js' %}"></script>
+     <script src="{% static 'shop/assets/js/lazysizes.js' %}"></script>
+     <script src="{% static 'shop/assets/js/main.js' %}"></script>
+</div>
+</body>
+</html>
+

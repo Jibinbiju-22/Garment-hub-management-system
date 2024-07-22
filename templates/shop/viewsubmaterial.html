@@ -1,0 +1,97 @@
+{% include 'shop/header.html' %}
+{% load static %}
+
+<style>
+    .bright {
+  a:link, a:visited {
+  background-color: white;
+  color: black;
+  border: 2px solid #DA70D6;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 150px;
+ 
+}
+
+a:hover, a:active {
+  background-color: #DA70D6;
+  color: white;
+}
+}
+
+</style>
+
+<!--Body Content-->
+<div id="page-content">
+    <!--Collection Banner-->
+    <div class="collection-header">
+        <div class="collection-hero">
+            <div class="collection-hero__image"><img class="blur-up lazyload"
+                                                     data-src="{% static 'shop/assets/images/cat-women1.jpg' %}"
+                                                     src="{% static 'shop/assets/images/cat-women1.jpg' %}" alt="Women"
+                                                     title="Women"/></div>
+            <div class="collection-hero__title-wrapper"><h1 class="collection-hero__title page-width">Shop What You
+                Want</h1></div>
+        </div>
+    </div>
+    <!--End Collection Banner-->
+
+    <div class="container">
+
+        <div class="row">
+
+            <!--Main Content-->
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+                <div class="category-description">
+                    <br> <br> <strong><h1 align="center">SUB MATERIALS</h1></strong>
+
+                </div>
+                <hr>
+                <div class="productList">
+
+                    <div class="grid-products grid--view-items">
+
+
+                        <div class="row">
+
+                            {% for i in submaterial %}
+
+                            <div class="col-6 col-sm-6 col-md-4 col-lg-2 grid-view-item style2 item">
+
+                                <div class="product-details text-center">
+                                    <!-- product name -->
+                                    <div class="product-name">
+
+                                        <div class="bright">
+
+                                            <a href="{% url 'viewpatternbysubmaterial' id=i.submaterialid %}">{{ i.submaterialtype }}</a>
+                                            
+
+                                        </div>
+                                    </div>
+                                    <!-- End product name -->
+
+
+                                </div>
+                                <!-- End product details -->
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <hr class="clear">
+            </div>
+            <!--End Main Content-->
+
+        </div>
+    </div>
+
+</div>
+<!--End Body Content-->
+{% include 'shop/footer.html' %}

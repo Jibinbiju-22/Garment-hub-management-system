@@ -1,0 +1,123 @@
+{% include 'shop/header.html' %}
+{% load static %}
+
+<style>
+.button {
+  background-color: #f4511e; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+.button1 {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+</style>
+
+<script>
+     document.addEventListener("DOMContentLoaded", function() {
+                            setMinDateAndDisplay();
+                            });
+
+                            function setMinDateAndDisplay() {
+                            var datePicker = document.getElementById("deliverydate");
+                            var currentDate = new Date();
+                            currentDate.setDate(currentDate.getDate() + 3); // Adding 5 days
+                            var minDate = currentDate.toISOString().split('T')[0];
+                            datePicker.setAttribute("min", minDate);
+
+                            // Display the current date plus five days in the input field
+                            var selectedDate = new Date();
+                            selectedDate.setDate(selectedDate.getDate() + 3); // Adding 5 days
+                            datePicker.value = selectedDate.toISOString().split('T')[0];
+                            }
+</script>
+
+<br><br><br><br><br><br><br><br>
+<!--Body Content-->
+<div id="page-content">
+    <!--MainContent-->
+    <div id="MainContent" class="main-content" role="main">
+        <div id="ProductSection-product-template" class="product-template__container prstyle2 container">
+            <!--#ProductSection-product-template-->
+            <div class="product-single product-single-1">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="product-details-img product-single__photos bottom">
+                            <div class="zoompro-wrap product-zoom-right pl-20">
+                                <div class="zoompro-span">
+                                    <img class="blur-up lazyload zoompro"
+                                         data-zoom-image="/images/{{ product.productphoto }}" alt=""
+                                         src="/images/{{ product.productphoto }}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Product Feature-->
+                        <div class="prFeatures"><br><br><br><br>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+                                    <img src="{% static 'shop/assets/images/credit-card.png' %}" alt="Safe Payment"
+                                         title="Safe Payment"/>
+                                    <div class="details"><h3>Safe Payment</h3>Pay with the world's most payment methods.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 feature">
+                                    <img src="{% static 'shop/assets/images/shield.png' %}" alt="Confidence"
+                                         title="Confidence"/>
+                                    <div class="details"><h3>Confidence</h3>Protection covers your purchase and personal
+                                        data.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Product Feature-->
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <form class="variants" action="{% url 'booking' id=product.productid %}" method="post">
+                            {% csrf_token %}
+                            <div class="product-single__meta">
+                                <h1 class="product-single__title">DELIVERY DATE</h1><br>
+                            </div>
+                            <!--Product Tabs-->
+
+                            <div class="tabs-listing">
+                                <div class="tab-container">
+                                    <h3 class="acor-ttl active" rel="tab1">SELECT THE EXPECTED DELIERY DATE</h3>
+                                    <div id="tab1" class="tab-content">
+                                        <div class="product-description rte">
+                                            <br> <input type="date" id="deliverydate" name="deliverydate" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End Product Tabs-->
+                            <br><br>
+                            <button class="button button2" type="submit">NEXT</button>
+                        </form>
+                    </div>
+                </div>
+                <!--End Product Tabs-->
+            </div>
+        </div>
+        <!--End-product-single-->
+    </div>
+    <!--#ProductSection-product-template-->
+</div>
+<!--MainContent-->
+</div>
+<!--End Body Content-->
+</div>
+
+{% include 'shop/footer.html' %}
+<!-- belle/product-layout-2.html   11 Nov 2019 12:42:40 GMT -->

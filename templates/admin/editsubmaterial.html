@@ -1,0 +1,37 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+<div class="col-md-10 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title" align="center">EDIT SUB-MATERIAL</h4>
+                  <form class="forms-sample" action="{% url 'editsubmaterial' submaterial.submaterialid %}" method="post">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                    <label for="exampleFormControlSelect2">SELECT MATERIAL</label>
+                    <select name="materialid" class="form-control" id="exampleFormControlSelect2" >
+                        <option  style="color:black;" selected disable value="{{submaterial.materialid.materialid}}">{{submaterial.materialid.materialtype}}</option>
+                        {% for i in material %}
+                      <option value="{{ i.materialid }}">{{ i.materialtype }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                      <div class="form-group">
+                      <label for="exampleInputUsername1">SUB-MATERIAL NAME</label>
+                      <input type="text" class="form-control" id="exampleInputUsername1"  name="submaterialtype" value="{{submaterial.submaterialtype}}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+{% include 'admin/footer.html' %}

@@ -1,0 +1,37 @@
+{% include 'admin/header.html' %}
+
+{% include 'admin/theme.html' %}
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main-panel">
+
+<div class="col-md-10 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title" align="center">LOCATION REGISTRATION</h4>
+                  <form class="forms-sample" action="{% url 'locationregistration' %}" method="post">
+                      {% csrf_token %}
+
+                    <div class="form-group">
+                    <label for="exampleFormControlSelect2">SELECT DISTRICT</label>
+                    <select name="districtid" class="form-control" id="exampleFormControlSelect2" >
+                       <option>Choose district...</option>
+                         {% for i in district %}
+                      <option value="{{ i.districtid }}">{{ i.districtname }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                    <div class="form-group">
+                      <label for="exampleInputUsername1">LOCATION NAME</label>
+                      <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Enter location name" name="locationname" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+{% include 'admin/footer.html' %}
